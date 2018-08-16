@@ -2,7 +2,39 @@ var Inputs = {
 	numbers: [],
 	operator: "",
 	tempValue: "",
-	result: 0,
+	moveToNumbers: function() {
+		if(!(Inputs.tempValue === "")) {
+			Inputs.numbers.push(parseInt(Inputs.tempValue));
+			Inputs.tempValue = "";
+		}
+	},
+	checkOperator: function() {
+		switch(Inputs.operator) {
+			case "+":
+				Calculator.addNumbers();
+				break;
+			case "-":
+				Calculator.subtractNumbers();
+				break;
+			case "*":
+				Calculator.multiplyNumbers();
+				break;
+			case "/":
+				Calculator.divideNumbers();
+				break;
+			default:
+				alert("Please select an appropriate operator.");
+				break;
+		}
+	},
+	spliceNumbers: function () {
+		//Clears numbers[] and adds result.
+		Inputs.numbers.splice(0,2,result);
+	}
+}
+
+var Calculator = {
+	canUseOperator: false,
 	addNumbers: function() {
 		result = Inputs.numbers[0] + Inputs.numbers[1];
 	},
@@ -15,42 +47,12 @@ var Inputs = {
 	divideNumbers: function() {
 		result = Inputs.numbers[0] / Inputs.numbers[1];
 	},
-	moveToNumbers: function() {
-		if(!(Inputs.tempValue === "")) {
-			Inputs.numbers.push(parseInt(Inputs.tempValue));
-			Inputs.tempValue = "";
-		}
+	deleteNumbers: function() {
+		$("#screen").slice(0, -1);
 	},
-	checkOperator: function() {
-		switch(Inputs.operator) {
-			case "+":
-				Inputs.addNumbers();
-				break;
-			case "-":
-				Inputs.subtractNumbers();
-				break;
-			case "*":
-				Inputs.multiplyNumbers();
-				break;
-			case "/":
-				Inputs.divideNumbers();
-				break;
-			default:
-				alert("Please select an appropriate operator.");
-				break;
-		}
-	},
-	resetTempValue: function () {
-		//Clears numbers[] and adds result.
-		Inputs.numbers.splice(0,2,result);
-	}
-}
-
-var Calculator = {
-	canUseOperator: false,
 	clearScreen: function() {
 		$("#screen").empty();
-		Inputs.resetTempValue();
+		Inputs.spliceNumbers();
 	},
 	showResult: function() {
 		$("#screen").append(Inputs.numbers[0]);
@@ -76,7 +78,7 @@ $(":button").click(function() {
 	if($(this).hasClass("equals")) {
 		Inputs.moveToNumbers();
 		Inputs.checkOperator();
-		Inputs.resetTempValue();
+		Inputs.spliceNumbers();
 		Calculator.clearScreen();
 		Calculator.showResult();
 	}
@@ -88,5 +90,6 @@ $(":button").click(function() {
 	}
 	if($(this).hasClass("delete")) {
 		// Figure this out!
+		Inputs.deleteNumbers();
 	}
 })
