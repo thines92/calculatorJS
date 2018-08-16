@@ -1,61 +1,96 @@
-var inputs = [];
-var currentInput = "";
-var operators = [];
-var answer = 0;
-
-var Calculations = {
-	add(x,y) {
-		return x + y;
+var Inputs = {
+	numbers: [],
+	operator: "",
+	tempValue: "",
+	result: 0,
+	addNumbers: function() {
+		result = Inputs.numbers[0] + Inputs.numbers[1];
 	},
-
-	subtract(x,y) {
-		return x - y;
+	subtractNumbers: function() {
+		result = Inputs.numbers[0] - Inputs.numbers[1];
+	},
+	multiplyNumbers: function() {
+		result = Inputs.numbers[0] * Inputs.numbers[1];
+	},
+	divideNumbers: function() {
+		result = Inputs.numbers[0] / Inputs.numbers[1];
+	},
+	moveToNumbers: function() {
+		if(!(Inputs.tempValue === "")) {
+			Inputs.numbers.push(parseInt(Inputs.tempValue));
+			Inputs.tempValue = "";
+		}
+	},
+	checkOperator: function() {
+		switch(Inputs.operator) {
+			case "+":
+				Inputs.addNumbers();
+				break;
+			case "-":
+				Inputs.subtractNumbers();
+				break;
+			case "*":
+				Inputs.multiplyNumbers();
+				break;
+			case "/":
+				Inputs.divideNumbers();
+				break;
+			default:
+				alert("Please select an appropriate operator.");
+				break;
+		}
+	},
+	resetTempAndOperator: function () {
+		//Clears numbers[] and adds result.
+		Inputs.numbers.splice(0,2,result);
+		Inputs.operator = "";
 	}
 }
 
-function checkButtonType() {
-	var $this = $(this);
-	if($($($this)).hasClass("number")) {
-		currentInput += $($this).val().toString();
-	} else if ($($this).hasClass("operator")) {
-		inputs.push(parseInt(currentInput));
-		currentInput = "";
-	 	operators.push($($this).val());
-	} else if ($($this).hasClass("equals")) {
-		inputs.push(parseInt(currentInput));
-		currentInput = "";
-		calculateInputs();
-	}
+var Calculator = {
+	clearScreen: function() {
+		$("#screen").empty();
+	},
+	showResult: function() {
+		$("#screen").append(Inputs.numbers[0]);
+	},
+	canUseOperator: function() {
+		if(Inputs.operator === "")
+			if(Inputs.tempValue !== "" || Inputs.numbers.length > 0) {
+				return true;
+		}
+	},
+	
 }
-
-function calculateInputs() {
-	// for(i = 0; i < inputs.length; i++) {
-	// 	switch(operators[i]) {
-	// 		case "+":
-	// 			answer += Calculations.add(inputs[i],inputs[i+1]);
-	// 			inputs.length = 0;
-	// 			operators.length = 0;
-	// 			break;
-	// 		case "-":
-	// 			answer = Calculations.subtract(inputs[i],inputs[i+1]);
-	// 			break;
-	// 		case undefined:
-	// 			break;
-	// 		default:
-	// 			alert("big ole error");
-	// 			break;
-	// 	}
-	// }
-	if(operators[0] === "+") {
-		operators.shift();
-		answer += Calculations.add(inputs[0],inputs[1]);
-	}
-	$("#screen").append(answer);
-}
-
-
 
 $(":button").click(function() {
-	$("#screen").append($(this).val())
-	checkButtonType.bind($(this))();
+	if($(this).hasClass("number")) {
+		Inputs.tempValue += $(this).val();
+		$("#screen").append($(this).val())
+	}
+	if ($(this).hasClass("operator")) {
+		// Check to see if a number has been entered before operator
+		if(Calculator.canUseOperator()) {
+			Inputs.moveToNumbers();
+			Inputs.operator = $(this).val();
+			$("#screen").append($(this).val());
+		} else {
+			alert("Please enter a number first");
+		}
+	}
+	if($(this).hasClass("equals")) {
+		Inputs.moveToNumbers();
+		Inputs.checkOperator();
+		Inputs.resetTempAndOperator();
+		Calculator.clearScreen();
+		Calculator.showResult();
+	}
+	if($(this).hasClass("clear")) {
+		Inputs.numbers.length = 0;
+		Inputs.tempValue = "";
+		$("#screen").empty();
+	}
+	if($(this).hasClass("delete")) {
+		// Figure this out!
+	}
 })
