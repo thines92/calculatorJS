@@ -40,37 +40,39 @@ var Inputs = {
 				break;
 		}
 	},
-	resetTempAndOperator: function () {
+	resetTempValue: function () {
 		//Clears numbers[] and adds result.
 		Inputs.numbers.splice(0,2,result);
-		Inputs.operator = "";
 	}
 }
 
 var Calculator = {
+	canUseOperator: false,
 	clearScreen: function() {
 		$("#screen").empty();
+		Inputs.resetTempValue();
 	},
 	showResult: function() {
 		$("#screen").append(Inputs.numbers[0]);
 	},
-	canUseOperator: function() {
-		if(Inputs.operator === "")
-			if(Inputs.tempValue !== "" || Inputs.numbers.length > 0) {
-				return true;
-		}
-	},
+	// canUseOperator: function() {
+	// 	if(Inputs.operator === "")
+	// 		if(Inputs.tempValue !== "" || Inputs.numbers.length > 0) {
+	// 			return true;
+	// 	}
+	// },
 	
 }
 
 $(":button").click(function() {
 	if($(this).hasClass("number")) {
 		Inputs.tempValue += $(this).val();
+		Calculator.canUseOperator = true;
 		$("#screen").append($(this).val())
 	}
 	if ($(this).hasClass("operator")) {
 		// Check to see if a number has been entered before operator
-		if(Calculator.canUseOperator()) {
+		if(Calculator.canUseOperator) {
 			Inputs.moveToNumbers();
 			Inputs.operator = $(this).val();
 			$("#screen").append($(this).val());
@@ -81,13 +83,14 @@ $(":button").click(function() {
 	if($(this).hasClass("equals")) {
 		Inputs.moveToNumbers();
 		Inputs.checkOperator();
-		Inputs.resetTempAndOperator();
+		Inputs.resetTempValue();
 		Calculator.clearScreen();
 		Calculator.showResult();
 	}
 	if($(this).hasClass("clear")) {
 		Inputs.numbers.length = 0;
 		Inputs.tempValue = "";
+		Calculator.canUseOperator = false;
 		$("#screen").empty();
 	}
 	if($(this).hasClass("delete")) {
