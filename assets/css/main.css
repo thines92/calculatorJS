@@ -1,7 +1,17 @@
 .btn {
-	font-size: .88em;
-	border: none;
+	border: .5px solid black;
 }
+
+.jumbotron {
+	margin-top: 10px;
+	margin-bottom: 0;
+	border: .5px solid black;
+}
+
+#screen {
+	height: 5px;
+}
+
 .buttonGroup .btn {
 	width: 75%;
 }
