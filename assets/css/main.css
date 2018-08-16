@@ -1,5 +1,27 @@
-.buttons {
+.btn {
+	font-size: .88em;
+	border: none;
+}
+.buttonGroup .btn {
+	width: 75%;
+}
+
+.buttonGroup {
 	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	padding: 0;
+	margin-top: 5px;
+}
+
+.buttons .buttonGroup:first-child {
+	width: 98%;
+}
+
+.buttons {
+	padding: 0;
+}
+
+.number, .operator:not(first-child), .clear, .delete {
+	margin: 0px 1px;
 }
