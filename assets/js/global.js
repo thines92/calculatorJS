@@ -55,13 +55,6 @@ var Calculator = {
 	showResult: function() {
 		$("#screen").append(Inputs.numbers[0]);
 	},
-	// canUseOperator: function() {
-	// 	if(Inputs.operator === "")
-	// 		if(Inputs.tempValue !== "" || Inputs.numbers.length > 0) {
-	// 			return true;
-	// 	}
-	// },
-	
 }
 
 $(":button").click(function() {
