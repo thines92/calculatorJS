@@ -49,7 +49,7 @@ var Calculator = {
 		result = Inputs.numbers[0] / Inputs.numbers[1];
 	},
 	deleteNumbers: function() {
-		Inputs.screenString.slice(0, -1);
+		Inputs.screenString = Inputs.screenString.slice(0, -1);
 	},
 	clearScreen: function() {
 		$("#screen").empty();
@@ -96,6 +96,7 @@ $(":button").click(function() {
 	if($(this).hasClass("delete")) {
 		// Figure this out!
 		Calculator.deleteNumbers();
+		$("#screen").empty();
 		$("#screen").append(Inputs.screenString);
 	}
 })
