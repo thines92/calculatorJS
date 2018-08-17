@@ -63,9 +63,11 @@ var Calculator = {
 $(":button").click(function() {
 	if($(this).hasClass("number")) {
 		Inputs.tempValue += $(this).val();
-		Calculator.canUseOperator = true;
 		Inputs.screenString = Inputs.screenString + $(this).val();
 		$("#screen").html(Inputs.screenString)
+		if(Inputs.numbers.length === 0) {
+			Calculator.canUseOperator = true;
+		}
 	}
 	if ($(this).hasClass("operator")) {
 		// Check to see if a number has been entered before operator
@@ -73,9 +75,12 @@ $(":button").click(function() {
 			Inputs.moveToNumbers();
 			Inputs.operator = $(this).val();
 			Inputs.screenString = Inputs.screenString + ($(this).val())
+			Calculator.canUseOperator = false;
 			$("#screen").html(Inputs.screenString);
-		} else {
+		} else if(Inputs.numbers.length === 0) {
 			alert("Please enter a number first");
+		} else {
+			alert("Please finish your current calculation before using another operator.");
 		}
 	}
 	if($(this).hasClass("equals")) {
@@ -85,6 +90,7 @@ $(":button").click(function() {
 		Inputs.screenString = Inputs.numbers[0];
 		Calculator.clearScreen();
 		Calculator.showResult();
+		Calculator.canUseOperator = true;
 	}
 	if($(this).hasClass("clear")) {
 		Inputs.numbers.length = 0;
