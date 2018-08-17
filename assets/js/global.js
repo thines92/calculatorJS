@@ -2,6 +2,7 @@ var Inputs = {
 	numbers: [],
 	operator: "",
 	tempValue: "",
+	screenString: "",
 	moveToNumbers: function() {
 		if(!(Inputs.tempValue === "")) {
 			Inputs.numbers.push(parseInt(Inputs.tempValue));
@@ -48,7 +49,7 @@ var Calculator = {
 		result = Inputs.numbers[0] / Inputs.numbers[1];
 	},
 	deleteNumbers: function() {
-		$("#screen").slice(0, -1);
+		Inputs.screenString.slice(0, -1);
 	},
 	clearScreen: function() {
 		$("#screen").empty();
@@ -63,14 +64,16 @@ $(":button").click(function() {
 	if($(this).hasClass("number")) {
 		Inputs.tempValue += $(this).val();
 		Calculator.canUseOperator = true;
-		$("#screen").append($(this).val())
+		Inputs.screenString = Inputs.screenString + $(this).val();
+		$("#screen").html(Inputs.screenString)
 	}
 	if ($(this).hasClass("operator")) {
 		// Check to see if a number has been entered before operator
 		if(Calculator.canUseOperator) {
 			Inputs.moveToNumbers();
 			Inputs.operator = $(this).val();
-			$("#screen").append($(this).val());
+			Inputs.screenString = Inputs.screenString + ($(this).val())
+			$("#screen").html(Inputs.screenString);
 		} else {
 			alert("Please enter a number first");
 		}
@@ -79,17 +82,20 @@ $(":button").click(function() {
 		Inputs.moveToNumbers();
 		Inputs.checkOperator();
 		Inputs.spliceNumbers();
+		Inputs.screenString = Inputs.numbers[0];
 		Calculator.clearScreen();
 		Calculator.showResult();
 	}
 	if($(this).hasClass("clear")) {
 		Inputs.numbers.length = 0;
 		Inputs.tempValue = "";
+		Inputs.screenString = "";
 		Calculator.canUseOperator = false;
 		$("#screen").empty();
 	}
 	if($(this).hasClass("delete")) {
 		// Figure this out!
-		Inputs.deleteNumbers();
+		Calculator.deleteNumbers();
+		$("#screen").append(Inputs.screenString);
 	}
 })
